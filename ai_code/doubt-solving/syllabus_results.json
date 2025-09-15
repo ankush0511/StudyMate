@@ -1,0 +1,8 @@
+[
+    {
+        "topic": "i want to learn data structure",
+        "explanation": "Want to learn about data structures? That's great! \n\nThink of data structures like different containers for organizing information in a computer.  Just like we use boxes, shelves, and drawers to keep things tidy, computers use data structures to store and manage data efficiently.\n\nHere are some common types:\n\n* **Arrays:** Imagine a neat line of boxes, each holding a single piece of data. That's an array! They're great for storing things in a specific order.\n\n* **Lists:** Like a flexible chain, lists can grow or shrink. You can add or remove items easily, making them perfect for storing things that might change.\n\n* **Stacks:**  Think of a stack of plates. You can only add or remove items from the top. This is how stacks work – they follow a \"last in, first out\" order.\n\n* **Queues:**  Like a line at the store, queues follow a \"first in, first out\" order.  \n\nLearning about data structures helps you write better code because it teaches you how to organize information in ways that are efficient and make your programs run faster.",
+        "video_url": "https://www.youtube.com/watch?v=mlyIXJiEJy8",
+        "video_title": "Data Structures Full Course 2025 | Data Structures Tutorial for Beginners | Simplilearn"
+    }
+]

@@ -1,0 +1,12 @@
+streamlit
+pandas
+numpy
+plotly
+langchain
+langchain-openai
+langchain-community
+crewai
+langchain-groq
+langchain-google-genai
+python-dotenv
+# faiss-gpu

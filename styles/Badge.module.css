@@ -1,0 +1,53 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.card h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.card p {
+  color: #666;
+  font-size: 0.9rem;
+  flex-grow: 1;
+}
+
+/* Styles for an unlocked badge */
+.unlocked {
+  border-color: #ffd700;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+}
+
+.unlocked .icon {
+  font-size: 4rem;
+  color: #ffa500;
+}
+
+/* Styles for a locked badge */
+.locked {
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+.locked .icon {
+  font-size: 4rem;
+  color: #aaa;
+}
