@@ -1,0 +1,66 @@
+import re
+
+def find_youtube_links(text: str) -> list[str]:
+    """
+    Finds all valid YouTube video links within a given string of text.
+
+    This function uses a regular expression to identify various formats of YouTube URLs,
+    including standard watch links, shortened youtu.be links, and embed links.
+
+    Args:
+        text: The string to search for YouTube links.
+
+    Returns:
+        A list of strings, where each string is a valid YouTube link found in the text.
+        Returns an empty list if no links are found.
+    """
+    # Regex to match different YouTube URL formats.
+    # It looks for:
+    # - Optional http:// or https://
+    # - Optional www.
+    # - youtube.com/watch?v=... or youtu.be/... or youtube.com/embed/...
+    # - The 11-character video ID
+    youtube_regex = (
+        r'(https?://)?(www\.)?'
+        r'(youtube|youtu|youtube-nocookie)\.(com|be)/'
+        r'(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})'
+    )
+
+    # Find all matches in the input text
+    found_links = re.findall(youtube_regex, text)
+
+    # The regex returns tuples of capturing groups. We need to reassemble the full URL.
+    # A full URL might look like: ('https://', 'www.', 'youtube', 'com', 'watch?v=', 'dQw4w9WgXcQ')
+    # We will reconstruct the most common format: https://www.youtube.com/watch?v=VIDEO_ID
+    
+    reconstructed_links = []
+    for match in found_links:
+        # The video ID is the last captured group
+        video_id = match[-1]
+        # We build a standardized URL format
+        reconstructed_links.append(f"https://www.youtube.com/watch?v={video_id}")
+
+    return reconstructed_links
+
+# --- Example Usage ---
+if __name__ == "__main__":
+    sample_text = """
+    Here are some of my favorite videos:
+    1. A classic: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+    2. A shortened link: http://youtu.be/o-YBDTqX_ZU
+    3. An embedded version: www.youtube.com/embed/y6120QOlsfU
+    4. Some invalid text and a link without protocol: youtube.com/watch?v=3JZ_D3ELwOQ
+    This is not a link: youtube.com/watch?v=short
+    Nor is this: htts://www.youtube.com/watch?v=
+    Here's one with extra parameters: https://www.youtube.com/watch?v=Y_plhk1FUQA&list=PL...
+    """
+
+    print("--- Finding YouTube links in sample text ---")
+    valid_links = find_youtube_links(sample_text)
+
+    if valid_links:
+        print(f"Found {len(valid_links)} valid links:")
+        for i, link in enumerate(valid_links, 1):
+            print(f"{i}. {link}")
+    else:
+        print("No valid YouTube links were found.")

@@ -35,12 +35,52 @@ export default function UserProfilePage() {
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    // --- NEW: useEffect to fetch profile data ---
     useEffect(() => {
-        if (user) {
-            setFormData(prev => ({ ...prev, fullName: user.name || '' }));
-            setProfilePreview(user.image || 'https://placehold.co/128x128/e0e7ff/4f46e5?text=Upload');
+        // Only fetch data if the user is authenticated
+        if (status === 'authenticated') {
+            const fetchProfile = async () => {
+                try {
+                    const response = await fetch('/api/get-profile');
+                    if (!response.ok) {
+                        // Don't throw an error for 404, it just means no profile exists yet
+                        if (response.status === 404) {
+                            console.log("No profile found, using session data.");
+                            // Pre-fill with session data for new users
+                            setFormData(prev => ({...prev, fullName: user?.name || ''}));
+                            setProfilePreview(user?.image || 'https://placehold.co/128x128/e0e7ff/4f46e5?text=Upload');
+                            return;
+                        }
+                        throw new Error('Failed to fetch profile');
+                    }
+                    const data = await response.json();
+
+                    // Populate form with fetched data
+                    setFormData(prev => ({
+                        ...prev,
+                        fullName: data.fullName || user?.name || '',
+                        location: data.location || '',
+                        phone: data.phone || '',
+                        experience: data.experience || '',
+                        desiredRole: data.desiredRole || '',
+                        linkedin: data.onlinePresence?.linkedin || '',
+                        github: data.onlinePresence?.github || '',
+                        portfolio: data.onlinePresence?.portfolio || '',
+                    }));
+
+                    // Set profile picture preview from fetched data, fallback to session/placeholder
+                    setProfilePreview(data.profilePictureUrl || user?.image || 'https://placehold.co/128x128/e0e7ff/4f46e5?text=Upload');
+
+                } catch (error) {
+                    console.error("Error fetching profile data:", error);
+                    setMessage('❌ Could not load profile data.');
+                }
+            };
+
+            fetchProfile();
         }
-    }, [user]);
+    }, [status, user]); // Rerun when session status or user object changes
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -51,7 +91,7 @@ export default function UserProfilePage() {
         const file = event.target.files[0];
         if (file) {
             if (file.size > 1024 * 1024) { // 1MB check
-                alert("File size exceeds 1MB.");
+                setMessage("❌ File size exceeds 1MB."); // Use message state instead of alert
                 return;
             }
             setFormData(prev => ({ ...prev, profilePicture: file }));
@@ -69,8 +109,11 @@ export default function UserProfilePage() {
         setMessage('');
 
         const data = new FormData();
+        // Append all form fields to FormData object
         Object.keys(formData).forEach(key => {
-            data.append(key, formData[key]);
+            if (formData[key]) { // Only append if value exists
+                data.append(key, formData[key]);
+            }
         });
         
         try {
@@ -82,7 +125,7 @@ export default function UserProfilePage() {
             const result = await response.json();
 
             if (response.ok) {
-                setMessage('Profile saved successfully!');
+                setMessage('✅ Profile saved successfully!');
             } else {
                 setMessage(`❌ Error: ${result.message}`);
             }
@@ -129,7 +172,7 @@ export default function UserProfilePage() {
                                     </div>
                                     <div>
                                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                                        <input type="email" name="email" value={user.email} required className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed" readOnly />
+                                        <input type="email" name="email" value={user?.email || ''} required className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed" readOnly />
                                     </div>
                                     <div>
                                         <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
@@ -181,7 +224,7 @@ export default function UserProfilePage() {
                                     {isLoading ? 'Saving...' : 'Save Changes'}
                                 </button>
                             </div>
-                            {message && <p className="text-center mt-4 font-medium">{message}</p>}
+                            {message && <p className={`text-center mt-4 font-medium ${message.startsWith('❌') ? 'text-red-600' : 'text-green-600'}`}>{message}</p>}
                         </form>
                     </div>
                 </div>

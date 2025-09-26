@@ -1,75 +1,13 @@
-import os
 import sys
 import json
 import re
 import base64
-import requests
 from groq import Groq
 from dotenv import load_dotenv
 from fpdf import FPDF
+from notes_videos import clean_text_for_pdf, generate_pdf_from_json, get_groq_response, validate_youtube_url
 
-# --- CONFIGURATION ---
-MODEL_NAME = "meta-llama/llama-4-scout-17b-16e-instruct"
-
-
-def clean_text_for_pdf(text):
-    """Replaces common unsupported Unicode characters with latin-1 equivalents."""
-    replacements = {
-        '\u2013': '-', '\u2014': '-', '\u2018': "'", '\u2019': "'",
-        '\u201c': '"', '\u201d': '"', '\u2026': '...', '•': '*',
-    }
-    for unicode_char, replacement in replacements.items():
-        text = text.replace(unicode_char, replacement)
-    return text.encode('latin-1', 'ignore').decode('latin-1')
-
-def generate_pdf_from_json(json_data):
-    """Generates a PDF from a JSON array of notes and returns it as bytes."""
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_auto_page_break(auto=True, margin=15)
-    for item in json_data:
-        topic = clean_text_for_pdf(item.get('topic', '').capitalize())
-        explanation = clean_text_for_pdf(item.get('explanation', ''))
-        pdf.set_font("Arial", 'B', 14)
-        pdf.multi_cell(0, 10, topic)
-        pdf.ln(2)
-        pdf.set_font("Arial", '', 12)
-        parts = re.split(r'(\*\*.*?\*\*)', explanation)
-        for part in parts:
-            if part.startswith('**') and part.endswith('**'):
-                pdf.set_font('', 'B')
-                pdf.write(5, part.strip('*'))
-            else:
-                pdf.set_font('', '')
-                pdf.write(5, part)
-        pdf.ln(10)
-    return pdf.output(dest="S").encode("latin-1")
-
-
-# --- GROQ API CALL ---
-def get_groq_response(query: str, system_prompt: str) -> str:
-    """Gets a response from the Groq API with a specific system prompt."""
-    load_dotenv()
-    api_key = os.environ.get("GROQ_API_KEY")
-    if not api_key:
-        raise ValueError("GROQ_API_KEY not found. Please create a .env file.")
-
-    client = Groq(api_key=api_key)
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": query}
-    ]
-
-    chat_completion = client.chat.completions.create(
-        messages=messages,
-        model=MODEL_NAME,
-        temperature=0.7,
-        max_tokens=4096,
-        # --- THIS IS THE FIX ---
-        # Stop waiting for the API after 30 seconds
-        timeout=30.0,
-    )
-    return chat_completion.choices[0].message.content
+load_dotenv()
 
 # --- MAIN EXECUTION BLOCK ---
 # ... (The rest of your main execution block is correct)
@@ -80,6 +18,7 @@ if __name__ == "__main__":
         request = json.loads(input_data)
         task = request.get("aiTask")
         user_query = request.get("query")
+        
         if not task or not user_query:
             raise ValueError("Both 'aiTask' and 'query' fields are required.")
 
@@ -114,12 +53,42 @@ if __name__ == "__main__":
             }
 
         elif task == "find-youtube-videos":
+            # 1. Change the prompt to request structured JSON
             system_prompt = (
                 "You are a YouTube video finder. Based on the user's topic, find 3 to 5 highly relevant "
-                "YouTube videos. For each video, provide the title, the channel name, and a direct URL. "
-                "Format your response clearly using Markdown."
+                "YouTube videos. Your response MUST be a valid JSON array of objects. Each object must have "
+                "a 'title', 'channel', and 'url' key. Ensure the URL is a direct link to a YouTube video."
             )
-            response_content = get_groq_response(user_query, system_prompt)
+            ai_response_str = get_groq_response(user_query, system_prompt)
+            
+            # 2. Clean and parse the JSON response
+            cleaned_str = re.sub(r'^```json\s*|\s*```$', '', ai_response_str.strip())
+            videos_json = json.loads(cleaned_str)
+            
+            # 3. Validate each URL and build a clean response string
+            validated_videos = []
+            if isinstance(videos_json, list): # Make sure the AI returned a list
+                for video in videos_json:
+                    url = video.get("url")
+                    if url and validate_youtube_url(url):
+                        validated_videos.append(video)
+            
+            # 4. Format the final string to send to the frontend
+            if not validated_videos:
+                response_content = "I couldn't find any valid YouTube videos for that topic. Please try a different search."
+            else:
+                response_parts = []
+                for idx, video in enumerate(validated_videos):
+                    title = video.get('title', 'No Title')
+                    channel = video.get('channel', 'No Channel')
+                    url = video.get('url')
+                    response_parts.append(
+                        f"**{idx + 1}. {title}**\n"
+                        f"- **Channel:** {channel}\n"
+                        f"- **Link:** {url}"
+                    )
+                response_content = "\n\n".join(response_parts)
+
             result_dict = {"response": response_content, "isPdf": False}
 
         else:

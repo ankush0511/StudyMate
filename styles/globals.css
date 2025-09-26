@@ -2,6 +2,7 @@
 
 /* styles/globals.css */
 
+/* --- Original Flip Card Styles --- */
 .perspective {
   perspective: 1000px;
 }
@@ -49,4 +50,125 @@
   color: #333;
   border: 2px solid #8c9eff;
   transform: rotateY(180deg);
+}
+
+/* --- NEW: Attractive Editor Styles --- */
+
+/* --- Main Editor Container --- */
+.flashcard-editor {
+  border: 1px solid #e0e7ff;
+  padding: 24px;
+  background: linear-gradient(145deg, #f9fafb, #f3f4f6);
+  border-radius: 1rem;
+}
+
+/* --- Individual Card Styling --- */
+.flashcard-editor-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease-in-out;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.flashcard-editor-card:focus-within {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Textarea Inputs --- */
+.flashcard-editor-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #111827;
+  background-color: #f9fafb;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  resize: vertical;
+}
+
+.flashcard-editor-textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+}
+
+.flashcard-editor-textarea::placeholder {
+  color: #9ca3af;
+}
+
+/* --- Delete Button --- */
+.delete-card-btn {
+  background-color: transparent;
+  color: #9ca3af;
+  padding: 8px;
+  border-radius: 9999px; /* circular */
+  transition: all 0.2s ease-in-out;
+  flex-shrink: 0; /* Prevents button from shrinking */
+}
+
+.delete-card-btn:hover {
+  background-color: #fee2e2;
+  color: #ef4444;
+  transform: scale(1.1);
+}
+
+/* --- Add Card Button --- */
+.add-card-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px;
+  background: linear-gradient(45deg, #22c55e, #16a34a);
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: 0 4px 14px 0 rgba(0, 119, 255, 0.19);
+  transition: all 0.25s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.add-card-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px 0 rgba(0, 119, 255, 0.23);
+}
+
+/* --- Save Changes Button --- */
+.save-changes-btn {
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #6366f1, #4f46e5);
+    color: white;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.875rem; /* text-sm */
+    border: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease;
+}
+
+.save-changes-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }

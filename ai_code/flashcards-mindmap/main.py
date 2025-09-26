@@ -1,76 +1,88 @@
 import sys
 import json
 import base64
-from utils.generate_material import generate_study_materials
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
+import fitz  # PyMuPDF library for reading PDFs
+from utils.generate_material import generate_study_materials
+
 load_dotenv()
-
-groq_api_key=os.getenv('GROQ_API_KEY')
-
+groq_api_key = os.getenv('GROQ_API_KEY')
 
 def run_model(input_method, content, file_name=None):
     flashcards = []
-    mind_map = {} 
+    mind_map = {}
 
-    if input_method == "topic" or input_method == "plain_text":
-        # Use the API key from the .env file for both methods
+    # --- NEW: Logic for PDF processing ---
+    if input_method == "pdf":
+        try:
+            # Decode the base64 string into bytes
+            pdf_bytes = base64.b64decode(content)
+
+            # Extract text from the PDF bytes
+            full_text = ""
+            with fitz.open(stream=pdf_bytes, filetype="pdf") as doc:
+                for page in doc:
+                    full_text += page.get_text()
+
+            if not full_text.strip():
+                # Handle cases where PDF has no text (e.g., images only)
+                mind_map = {"error": "Could not extract text from the PDF."}
+                flashcards = [{"question": "Extraction Error", "answer": "The PDF might contain only images or be empty."}]
+            else:
+                # If text is extracted, use it as the content for the AI
+                content = f"Based on the document '{file_name}', {full_text}"
+                # Fall through to the main generation logic
+
+        except Exception as e:
+            print(f"Error processing PDF: {e}", file=sys.stderr)
+            mind_map = {"error": "Failed to process the PDF file."}
+            flashcards = [{"question": "Processing Error", "answer": "There was an issue reading the uploaded PDF."}]
+            return {"mindMap": mind_map, "flashcards": flashcards}
+
+    # --- Main Generation Logic for Topic, Plain Text, and now PDF Content ---
+    if content:
+        # This block now handles topic, plain_text, and the extracted text from PDFs
         con = generate_study_materials(content, groq_api_key=groq_api_key)
 
-        # --- FIX: Check if the result is a dictionary before using it ---
         if isinstance(con, dict):
             flashcards = con.get('flashcards', [])
-            mind_map = con.get('mind_map', {})
+            mind_map = con.get('mindMap', {}) 
         else:
-            # If 'con' is not a dictionary, it's likely an error object.
-            # Print a helpful message to the server log.
             print(f"API call failed. Received error: {con}", file=sys.stderr)
-            # flashcards and mind_map will remain empty lists/dicts
-    
-    # PDF logic is unchanged, but consider removing if not used.
-    elif input_method == "pdf":
-        decoded_content = base64.b64decode(content).decode('latin-1') 
-        flashcards.append({"question": f"Summary of {file_name}?", "answer": f"Content from {file_name} (first 50 chars): {decoded_content[:50]}..."})
-        mind_map = {"placeholder": "PDF content not visualized"}
-    
-    return {"mindMapImage": mind_map, "flashcards": flashcards}
+            # Return empty data if AI fails
+            flashcards = []
+            mind_map = {}
+
+    return {"mindMap": mind_map, "flashcards": flashcards}
 
 def main():
     try:
         input_data = json.loads(sys.stdin.read())
-        
         query_data = input_data.get("query", {})
-        
         input_method = query_data.get("inputMethod")
-        
+
         content = ""
         file_name = None
-        
+
         if input_method == "topic":
             content = query_data.get("topicName", "")
         elif input_method == "plain_text":
             content = query_data.get("plainTextContent", "")
         elif input_method == "pdf":
-            content = query_data.get("fileContent", "") 
+            # For PDF, content is the base64 string, which we process in run_model
+            content = query_data.get("fileContent", "")
             file_name = query_data.get("fileName", "")
-        
+
         if not content:
             raise ValueError("No content provided for generation.")
 
         result = run_model(input_method, content, file_name)
-        
+
         print(json.dumps({"response": result}))
-        
+
     except Exception as e:
         print(json.dumps({"error": str(e)}))
 
 if __name__ == "__main__":
     main()
-
-# input_method = "topic"
-# content = "Machine Learning"
-# file_name = None
-
-# result = run_model(input_method, content, file_name)
-
-# print(result)

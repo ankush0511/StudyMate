@@ -3,8 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSession, signOut } from "next-auth/react";
+import { useSession,signIn, signOut } from "next-auth/react";
 import { FaBars } from "react-icons/fa";
+
 
 export default function NavBar({ toggleSidebar }) {
   const { data: session } = useSession();
@@ -64,12 +65,12 @@ export default function NavBar({ toggleSidebar }) {
             )}
           </div>
         ) : (
-          <Link
-            href="/login"
+          <button
+            onClick={() => signIn("google", { callbackUrl: "/" })}
             className="px-4 py-2 font-semibold text-black bg-white rounded hover:bg-gray-200 cursor-pointer"
           >
             Sign In
-          </Link>
+          </button>
         )}
       </div>
     </nav>
