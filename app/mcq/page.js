@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
+// Import the icons from react-icons
+import { FaPencilAlt, FaKeyboard, FaFilePdf } from 'react-icons/fa';
 
 // --- MOCKED HOOKS & DATA (for standalone functionality) ---
 
@@ -9,23 +11,13 @@ const useQuizStreak = () => {
   const [streak, setStreak] = useState(5); // Example streak
   const [unlockedBadges, setUnlockedBadges] = useState([{ name: 'Quiz Novice' }]); // Example badge
 
-  // A function to simulate recording activity. In a real app, this would
-  // likely involve API calls or updating local storage.
+  // A function to simulate recording activity.
   const recordActivity = () => {
     console.log('Quiz activity recorded.');
-    // You could add logic here to increment the streak based on dates
   };
 
   return { streak, unlockedBadges, recordActivity };
 };
-
-// Mock data for quiz badges, assuming some structure
-const quizBadgesData = [
-    { name: 'Quiz Novice', description: 'Complete your first quiz.', icon: () => '🏆' },
-    { name: '5-Day Streak', description: 'Maintain a 5-day quiz streak.', icon: () => '🔥' },
-    { name: 'Topic Master', description: 'Score 100% on a quiz.', icon: () => '🧠' },
-];
-
 
 // --- Helper Components (included directly for a single-file solution) ---
 
@@ -52,7 +44,7 @@ function QuizHistoryDisplay({ history, isLoading, error, onSelectQuiz }) {
     return <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg" role="alert"><p>{error}</p></div>;
   }
 
-  if (history.length === 0) {
+  if (!history || history.length === 0) {
     return <p className="text-center text-gray-500 mt-8">You haven't completed any quizzes yet. Generate one to get started!</p>;
   }
 
@@ -90,8 +82,13 @@ export default function MCQGeneratorContent() {
     const [error, setError] = useState('');
     const [userAnswers, setUserAnswers] = useState({});
     const [showResults, setShowResults] = useState(false);
-    const [view, setView] = useState('quiz'); // 'quiz', 'history', 'history-detail'
+    const [view, setView] = useState('quiz');
     
+    // State for multi-input type
+    const [inputType, setInputType] = useState('topic'); // 'topic', 'plain_text', 'pdf'
+    const [paragraphText, setParagraphText] = useState('');
+    const [selectedFile, setSelectedFile] = useState(null);
+
     // --- HISTORY STATE ---
     const [quizHistory, setQuizHistory] = useState([]);
     const [historyLoading, setHistoryLoading] = useState(false);
@@ -107,7 +104,6 @@ export default function MCQGeneratorContent() {
             setHistoryLoading(true);
             setHistoryError('');
             try {
-                // This endpoint should be created on your backend to fetch data from MongoDB
                 const res = await fetch('/api/quiz-history'); 
                 if (!res.ok) throw new Error('Failed to fetch quiz history.');
                 const data = await res.json();
@@ -124,7 +120,6 @@ export default function MCQGeneratorContent() {
         }
     }, [view]);
 
-
     const score = useMemo(() => {
         if (!showResults) return 0;
         return mcqs.reduce((correctCount, mcq) => {
@@ -133,7 +128,6 @@ export default function MCQGeneratorContent() {
         }, 0);
     }, [showResults, mcqs, userAnswers]);
 
-
     const handleGenerateMCQs = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -141,27 +135,50 @@ export default function MCQGeneratorContent() {
         setError('');
         setUserAnswers({});
         setShowResults(false);
-        setView('quiz'); // Switch back to quiz view
+        setView('quiz');
         setSelectedHistoryQuiz(null);
-
-        recordActivity(); // This updates the quiz streak
-
-        const requestBody = {
-            aiTask: 'mcq',
-            query: { topic, num_questions: numQuestions },
-        };
+        recordActivity();
 
         try {
-            const res = await fetch('/api/run-ai', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestBody),
-            });
+            let res;
+            // Handle file upload with FormData
+            if (inputType === 'pdf' && selectedFile) {
+                const formData = new FormData();
+                formData.append('aiTask', 'mcq');
+                formData.append('file', selectedFile);
+                const query = { num_questions: numQuestions, input_type: 'file' };
+                formData.append('query', JSON.stringify(query));
+                
+                res = await fetch('/api/run-ai', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+            } else {
+                // Handle topic and paragraph with JSON
+                let queryPayload = { num_questions: numQuestions };
+                if (inputType === 'topic') {
+                    queryPayload.topic = topic;
+                    queryPayload.input_type = 'topic';
+                } else if (inputType === 'plain_text') {
+                    queryPayload.paragraph = paragraphText;
+                    queryPayload.input_type = 'paragraph';
+                }
+
+                res = await fetch('/api/run-ai', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ aiTask: 'mcq', query: queryPayload }),
+                });
+            }
+
             const data = await res.json();
             if (res.ok && data.response && Array.isArray(data.response.mcqs) && data.response.mcqs.length > 0) {
                 setMcqs(data.response.mcqs);
+                if (inputType === 'pdf') setTopic(selectedFile.name.split('.').slice(0, -1).join('.'));
+                if (inputType === 'plain_text') setTopic("Custom Text Quiz");
             } else {
-                setError(data.error || "No MCQs were generated. Please try a different topic.");
+                setError(data.error || "No MCQs were generated. Please try again.");
             }
         } catch (err) {
             setError('Network error or problem connecting to the AI service.');
@@ -177,11 +194,7 @@ export default function MCQGeneratorContent() {
 
     const handleQuizSubmit = async () => {
         setShowResults(true);
-
-        const finalScore = mcqs.reduce((correctCount, mcq) => {
-            const userAnswerKey = userAnswers[mcq.question];
-            return correctCount + (userAnswerKey === mcq.correct_answer ? 1 : 0);
-        }, 0);
+        const finalScore = score; // Use the memoized score
 
         const quizResult = {
             topic,
@@ -193,7 +206,6 @@ export default function MCQGeneratorContent() {
         };
 
         try {
-            // This endpoint should be created on your backend to save data to MongoDB
             const res = await fetch('/api/quiz-history', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -202,7 +214,6 @@ export default function MCQGeneratorContent() {
 
             if (res.ok) {
                 const { savedQuiz } = await res.json();
-                // Add the new quiz to the top of the history list for immediate UI update
                 setQuizHistory(prevHistory => [savedQuiz, ...prevHistory]);
             } else {
                console.error("Failed to save quiz history.");
@@ -215,14 +226,14 @@ export default function MCQGeneratorContent() {
     const handleSelectHistoryQuiz = (quiz) => {
         setSelectedHistoryQuiz(quiz);
         setView('history-detail');
-    }
+    };
 
     const getOptionStyle = (mcq, optionKey, quizContext) => {
         const isSelected = quizContext.userAnswers[mcq.question] === optionKey;
         const isCorrect = optionKey === mcq.correct_answer;
 
-        if (isCorrect) return 'bg-green-100 text-green-900 ring-2 ring-green-500 shadow-lg shadow-green-500/50';
-        if (isSelected && !isCorrect) return 'bg-red-100 text-red-900 ring-2 ring-red-500 shadow-lg shadow-red-500/50';
+        if (isCorrect) return 'bg-green-100 text-green-900 ring-2 ring-green-500';
+        if (isSelected && !isCorrect) return 'bg-red-100 text-red-900 ring-2 ring-red-500';
         return 'bg-gray-100 border-gray-200 text-gray-600 opacity-80';
     };
     
@@ -235,7 +246,7 @@ export default function MCQGeneratorContent() {
                     <p className="text-gray-600">Completed on {new Date(selectedHistoryQuiz.createdAt).toLocaleDateString()}</p>
                 </div>
             )}
-             {showResults && !isReview && (
+            {showResults && !isReview && (
                 <div className="bg-white p-6 rounded-2xl shadow-lg text-center border-2 border-blue-500">
                     <h2 className="text-2xl font-bold text-gray-800">Quiz Complete!</h2>
                     <p className="text-4xl font-extrabold text-blue-600 my-2">{score} / {mcqs.length}</p>
@@ -263,7 +274,7 @@ export default function MCQGeneratorContent() {
                             </button>
                         ))}
                     </div>
-                     {(showResults || isReview) && (
+                    {(showResults || isReview) && (
                         <div className="mt-5 pt-5 border-t border-dashed">
                             <p className="text-gray-800">
                                 <span className="font-bold">Explanation: </span>
@@ -276,15 +287,19 @@ export default function MCQGeneratorContent() {
         </div>
     );
 
+    // Helper to check if the form is valid for submission
+    const isFormInvalid = () => {
+        if (loading) return true;
+        if (inputType === 'topic') return !topic.trim();
+        if (inputType === 'plain_text') return !paragraphText.trim();
+        if (inputType === 'pdf') return !selectedFile;
+        return true;
+    };
 
     return (
         <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
             <style>{`
-                /* Basic styles that might have been in globals.css */
-                body {
-                    background-color: #f7fafc; /* A light gray background */
-                    font-family: sans-serif;
-                }
+                body { background-color: #f7fafc; font-family: sans-serif; }
             `}</style>
             <div className="text-center mb-8">
                  <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-3">
@@ -293,7 +308,7 @@ export default function MCQGeneratorContent() {
                     {view === 'quiz' && 'MCQ Quiz Generator'}
                 </h1>
                  <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-                    {view === 'quiz' ? 'Test your knowledge. Enter a topic, generate questions, and take the quiz!' : 'Review your past performance.'}
+                    {view === 'quiz' ? 'Test your knowledge on any topic.' : 'Review your past performance.'}
                 </p>
                 <p className="mt-4 text-md text-gray-500">
                     🔥 Your current quiz streak is: <strong>{streak} day{streak !== 1 && 's'}</strong>
@@ -312,15 +327,73 @@ export default function MCQGeneratorContent() {
             {view === 'quiz' && (
                 <>
                     <form onSubmit={handleGenerateMCQs} className="bg-white p-6 rounded-2xl shadow-lg mb-12 border border-gray-200">
+                        {/* Input Type Selector with Icons */}
+                        <div className="flex justify-center gap-2 mb-4 p-2 bg-gray-100 rounded-xl">
+                           <button
+                                type="button"
+                                onClick={() => setInputType('topic')}
+                                className={`w-full p-2 rounded-md font-semibold transition flex items-center justify-center ${
+                                    inputType === 'topic' ? 'bg-white text-blue-600 shadow' : 'text-gray-600'
+                                }`}
+                            >
+                                <FaPencilAlt className="mr-2" />
+                                Topic
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setInputType('plain_text')}
+                                className={`w-full p-2 rounded-md font-semibold transition flex items-center justify-center ${
+                                    inputType === 'plain_text' ? 'bg-white text-blue-600 shadow' : 'text-gray-600'
+                                }`}
+                            >
+                                <FaKeyboard className="mr-2" />
+                                Text
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => setInputType('pdf')}
+                                className={`w-full p-2 rounded-md font-semibold transition flex items-center justify-center ${
+                                    inputType === 'pdf' ? 'bg-white text-blue-600 shadow' : 'text-gray-600'
+                                }`}
+                            >
+                                <FaFilePdf className="mr-2" />
+                                PDF
+                            </button>
+                        </div>
+                        
                         <div className="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
-                            <input
-                                type="text"
-                                value={topic}
-                                onChange={(e) => setTopic(e.target.value)}
-                                placeholder="Enter any topic..."
-                                className="md:col-span-3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                                required
-                            />
+                            {/* Conditional Inputs */}
+                            {inputType === 'topic' && (
+                                <input
+                                    type="text"
+                                    value={topic}
+                                    onChange={(e) => setTopic(e.target.value)}
+                                    placeholder="Enter any topic..."
+                                    className="md:col-span-3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                                    required
+                                />
+                            )}
+                            {inputType === 'plain_text' && (
+                                <textarea
+                                    value={paragraphText}
+                                    onChange={(e) => setParagraphText(e.target.value)}
+                                    placeholder="Paste your paragraph here..."
+                                    className="md:col-span-3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition h-24"
+                                    required
+                                />
+                            )}
+                            {inputType === 'pdf' && (
+                                <div className="md:col-span-3 p-3 border border-gray-300 rounded-lg">
+                                    <input
+                                        type="file"
+                                        onChange={(e) => setSelectedFile(e.target.files[0])}
+                                        className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                        accept=".pdf,.txt,.md"
+                                        required
+                                    />
+                                </div>
+                            )}
+
                             <input
                                 type="number"
                                 value={numQuestions}
@@ -331,7 +404,7 @@ export default function MCQGeneratorContent() {
                             />
                             <button
                                 type="submit"
-                                disabled={loading || !topic.trim()}
+                                disabled={isFormInvalid()}
                                 className="md:col-span-1 bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-300 font-bold shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center h-full min-h-[50px]"
                             >
                                 {loading ? <Spinner/> : 'Generate'}
@@ -376,4 +449,3 @@ export default function MCQGeneratorContent() {
         </div>
     );
 }
-

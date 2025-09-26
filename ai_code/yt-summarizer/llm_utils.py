@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # API configuration
-A4F_API_KEY = os.getenv("A4F_API_KEY")
-A4F_API_URL = os.getenv("A4F_API_URL")
+A4F_API_KEY = "ddc-a4f-6816dbcca1a1426180a107549f8e7418"
+A4F_API_URL = "https://api.a4f.co/v1"
 openai_client = OpenAI(api_key=A4F_API_KEY, base_url=A4F_API_URL)
 
 def get_embedding(text: str) -> List[float]:
@@ -16,7 +16,7 @@ def get_embedding(text: str) -> List[float]:
     time.sleep(10)
     response = openai_client.embeddings.create(
         input=text,
-        model="provider-3/text-embedding-ada-002"
+        model="provider-6/qwen3-embedding-4b"
     )
     return response.data[0].embedding
 

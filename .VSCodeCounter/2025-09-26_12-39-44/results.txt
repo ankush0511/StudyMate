@@ -1,0 +1,181 @@
+Date : 2025-09-26 12:39:44
+Directory : c:\Users\Tejas\Desktop\Tejas\GitHub\studymate
+Total : 110 files,  15646 codes, 1278 comments, 926 blanks, all 17850 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |          5 |      9,560 |          0 |          3 |      9,563 |
+| JavaScript         |         45 |      3,385 |        203 |        415 |      4,003 |
+| Python             |         48 |      2,437 |      1,063 |        464 |      3,964 |
+| PostCSS            |          2 |        187 |         11 |         29 |        227 |
+| pip requirements   |          2 |         41 |          1 |          0 |         42 |
+| Markdown           |          2 |         24 |          0 |         14 |         38 |
+| JSON with Comments |          1 |          7 |          0 |          1 |          8 |
+| XML                |          5 |          5 |          0 |          0 |          5 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                   |        110 |     15,646 |      1,278 |        926 |     17,850 |
+| . (Files)                                                                                           |          9 |      8,785 |          1 |         27 |      8,813 |
+| ai_code                                                                                             |         53 |      3,310 |      1,064 |        465 |      4,839 |
+| ai_code (Files)                                                                                     |          2 |         53 |         20 |         10 |         83 |
+| ai_code\career                                                                                      |          8 |      1,627 |        520 |        124 |      2,271 |
+| ai_code\doubt-solving                                                                               |         12 |        543 |        134 |         95 |        772 |
+| ai_code\flashcards-mindmap                                                                          |         11 |        281 |         45 |         63 |        389 |
+| ai_code\flashcards-mindmap (Files)                                                                  |          3 |        147 |         12 |         36 |        195 |
+| ai_code\flashcards-mindmap\src                                                                      |          3 |         19 |         11 |          8 |         38 |
+| ai_code\flashcards-mindmap\utils                                                                    |          5 |        115 |         22 |         19 |        156 |
+| ai_code\mcq                                                                                         |          9 |        347 |        141 |         67 |        555 |
+| ai_code\study-planner                                                                               |          5 |        231 |        173 |         62 |        466 |
+| ai_code\yt-summarizer                                                                               |          6 |        228 |         31 |         44 |        303 |
+| app                                                                                                 |         19 |      2,569 |        129 |        322 |      3,020 |
+| app (Files)                                                                                         |          2 |         46 |          2 |          7 |         55 |
+| app\api                                                                                             |          7 |        351 |         50 |         78 |        479 |
+| app\api\auth                                                                                        |          2 |         52 |         12 |         20 |         84 |
+| app\api\auth (Files)                                                                                |          1 |         48 |         12 |         18 |         78 |
+| app\api\auth\[...nextauth]                                                                          |          1 |          4 |          0 |          2 |          6 |
+| app\api\flashcards-mindmap                                                                          |          1 |         62 |         10 |         14 |         86 |
+| app\api\get-profile                                                                                 |          1 |         26 |          1 |          9 |         36 |
+| app\api\profile                                                                                     |          1 |         44 |          8 |          8 |         60 |
+| app\api\quiz-history                                                                                |          1 |         24 |         16 |         10 |         50 |
+| app\api\run-ai                                                                                      |          1 |        143 |          3 |         17 |        163 |
+| app\badge                                                                                           |          1 |         50 |          2 |          8 |         60 |
+| app\career                                                                                          |          1 |        205 |          0 |         23 |        228 |
+| app\doubt-solving                                                                                   |          1 |        243 |          4 |         17 |        264 |
+| app\flashcards-mindmap                                                                              |          1 |        447 |         11 |         35 |        493 |
+| app\login                                                                                           |          1 |        150 |          0 |         21 |        171 |
+| app\mcq                                                                                             |          1 |        389 |         16 |         46 |        451 |
+| app\news                                                                                            |          1 |        162 |          2 |         23 |        187 |
+| app\profile                                                                                         |          1 |        205 |          9 |         21 |        235 |
+| app\study-planner                                                                                   |          1 |        196 |         20 |         29 |        245 |
+| app\yt-summarizer                                                                                   |          1 |        125 |         13 |         14 |        152 |
+| components                                                                                          |         13 |        503 |         19 |         41 |        563 |
+| lib                                                                                                 |          6 |        179 |         35 |         32 |        246 |
+| lib (Files)                                                                                         |          4 |        125 |         16 |         16 |        157 |
+| lib\hooks                                                                                           |          2 |         54 |         19 |         16 |         89 |
+| models                                                                                              |          3 |        108 |         19 |         10 |        137 |
+| public                                                                                              |          5 |          5 |          0 |          0 |          5 |
+| styles                                                                                              |          2 |        187 |         11 |         29 |        227 |
++-----------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                            | language           | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\README.md                                             | Markdown           |         23 |          0 |         14 |         37 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\career\README.md                              | Markdown           |          1 |          0 |          0 |          1 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\career\app.py                                 | Python             |        163 |        472 |         19 |        654 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\career\career_chatbot.py                      | Python             |         92 |         10 |         18 |        120 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\career\career_guidance_system.py              | Python             |        141 |         12 |         20 |        173 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\career\demo.ipynb                             | JSON               |        823 |          0 |          1 |        824 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\career\main.py                                | Python             |         46 |          0 |         14 |         60 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\career\requirements.txt                       | pip requirements   |         11 |          1 |          0 |         12 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\career\temp.py                                | Python             |        350 |         25 |         52 |        427 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\check_path.py                                 | Python             |         23 |         20 |         10 |         53 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\doubt-solving\__init__.py                     | Python             |          0 |          0 |          1 |          1 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\doubt-solving\chat.py                         | Python             |          5 |          1 |          2 |          8 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\doubt-solving\embedding.py                    | Python             |         25 |          3 |          3 |         31 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\doubt-solving\fetch_data.py                   | Python             |         88 |         24 |         12 |        124 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\doubt-solving\history.py                      | Python             |         28 |          3 |          7 |         38 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\doubt-solving\main.py                         | Python             |         81 |          6 |         13 |        100 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\doubt-solving\main_mcq.py                     | Python             |         85 |          6 |         21 |        112 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\doubt-solving\mcq.py                          | Python             |         69 |         23 |          9 |        101 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\doubt-solving\notes_videos.py                 | Python             |         60 |         11 |          9 |         80 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\doubt-solving\pdf_maker.py                    | Python             |         42 |          9 |          9 |         60 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\doubt-solving\processes.py                    | Python             |         52 |         48 |          9 |        109 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\doubt-solving\syllabus_results.json           | JSON               |          8 |          0 |          0 |          8 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\flashcards-mindmap\__init__.py                | Python             |          0 |          0 |          1 |          1 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\flashcards-mindmap\main.py                    | Python             |         61 |         10 |         17 |         88 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\flashcards-mindmap\mindmap.py                 | Python             |         86 |          2 |         18 |        106 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\flashcards-mindmap\src\__init__.py            | Python             |          0 |          0 |          1 |          1 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\flashcards-mindmap\src\nodes.py               | Python             |          9 |          8 |          3 |         20 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\flashcards-mindmap\src\visualize.py           | Python             |         10 |          3 |          4 |         17 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\flashcards-mindmap\utils\__init__.py          | Python             |          0 |          0 |          1 |          1 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\flashcards-mindmap\utils\generate_material.py | Python             |         51 |          3 |          7 |         61 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\flashcards-mindmap\utils\load_data.py         | Python             |         25 |         16 |          4 |         45 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\flashcards-mindmap\utils\structure.py         | Python             |          8 |          0 |          3 |         11 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\flashcards-mindmap\utils\validation.py        | Python             |         31 |          3 |          4 |         38 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\mcq\__init__.py                               | Python             |          0 |          0 |          1 |          1 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\mcq\embedding.py                              | Python             |         26 |          2 |          3 |         31 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\mcq\fetch_data.py                             | Python             |         88 |         24 |         12 |        124 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\mcq\history.py                                | Python             |         28 |          3 |          7 |         38 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\mcq\main.py                                   | Python             |         39 |         10 |         12 |         61 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\mcq\mcq.py                                    | Python             |         49 |         42 |         11 |        102 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\mcq\pdf_maker.py                              | Python             |         42 |          9 |          9 |         60 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\mcq\processes.py                              | Python             |         52 |         48 |          9 |        109 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\mcq\text_extractor.py                         | Python             |         23 |          3 |          3 |         29 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\requirements.txt                              | pip requirements   |         30 |          0 |          0 |         30 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\study-planner\app.py                          | Python             |        109 |        146 |         23 |        278 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\study-planner\graph.py                        | Python             |         10 |          0 |          4 |         14 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\study-planner\main.py                         | Python             |         28 |          3 |         10 |         41 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\study-planner\node.py                         | Python             |         59 |         24 |         18 |        101 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\study-planner\structure.py                    | Python             |         25 |          0 |          7 |         32 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\yt-summarizer\YT_RAG.py                       | Python             |         61 |          5 |          9 |         75 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\yt-summarizer\__init__.py                     | Python             |          0 |          0 |          1 |          1 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\yt-summarizer\llm_utils.py                    | Python             |         28 |          4 |          4 |         36 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\yt-summarizer\main.py                         | Python             |         33 |          4 |         16 |         53 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\yt-summarizer\pinecone_utils.py               | Python             |         40 |         10 |          6 |         56 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\ai_code\yt-summarizer\youtube_utils.py                | Python             |         66 |          8 |          8 |         82 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\api\auth\[...nextauth]\route.js                   | JavaScript         |          4 |          0 |          2 |          6 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\api\auth\login.js                                 | JavaScript         |         48 |         12 |         18 |         78 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\api\flashcards-mindmap\route.js                   | JavaScript         |         62 |         10 |         14 |         86 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\api\get-profile\route.js                          | JavaScript         |         26 |          1 |          9 |         36 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\api\profile\route.js                              | JavaScript         |         44 |          8 |          8 |         60 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\api\quiz-history\route.js                         | JavaScript         |         24 |         16 |         10 |         50 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\api\run-ai\route.js                               | JavaScript         |        143 |          3 |         17 |        163 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\badge\page.js                                     | JavaScript         |         50 |          2 |          8 |         60 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\career\page.js                                    | JavaScript         |        205 |          0 |         23 |        228 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\doubt-solving\page.js                             | JavaScript         |        243 |          4 |         17 |        264 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\flashcards-mindmap\page.js                        | JavaScript         |        447 |         11 |         35 |        493 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\layout.js                                         | JavaScript         |         28 |          1 |          4 |         33 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\login\page.js                                     | JavaScript         |        150 |          0 |         21 |        171 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\mcq\page.js                                       | JavaScript         |        389 |         16 |         46 |        451 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\news\page.js                                      | JavaScript         |        162 |          2 |         23 |        187 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\page.js                                           | JavaScript         |         18 |          1 |          3 |         22 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\profile\page.js                                   | JavaScript         |        205 |          9 |         21 |        235 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\study-planner\page.js                             | JavaScript         |        196 |         20 |         29 |        245 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\app\yt-summarizer\page.js                             | JavaScript         |        125 |         13 |         14 |        152 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\components\AuthProvider.js                            | JavaScript         |          5 |          0 |          2 |          7 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\components\BadgeCard.js                               | JavaScript         |         17 |          1 |          3 |         21 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\components\Dashboard.js                               | JavaScript         |         21 |          1 |          2 |         24 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\components\Footer.js                                  | JavaScript         |         31 |          0 |          6 |         37 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\components\InitialPage.js                             | JavaScript         |        232 |          8 |         13 |        253 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\components\LearningPath.js                            | JavaScript         |         24 |          0 |          1 |         25 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\components\LearningProgress.js                        | JavaScript         |         10 |          0 |          1 |         11 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\components\NavBar.js                                  | JavaScript         |         74 |          0 |          5 |         79 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\components\QuizBadgesDisplay.js                       | JavaScript         |         20 |          1 |          3 |         24 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\components\RecommendedCourses.js                      | JavaScript         |         18 |          0 |          1 |         19 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\components\Sidebar.js                                 | JavaScript         |         31 |          7 |          2 |         40 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\components\Widget.js                                  | JavaScript         |          9 |          1 |          1 |         11 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\components\sessionWrapper.js                          | JavaScript         |         11 |          0 |          1 |         12 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\eslint.config.mjs                                     | JavaScript         |         10 |          0 |          5 |         15 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\jsconfig.json                                         | JSON with Comments |          7 |          0 |          1 |          8 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\lib\auth.js                                           | JavaScript         |         27 |          0 |          2 |         29 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\lib\badges.js                                         | JavaScript         |         33 |          8 |          2 |         43 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\lib\dbConnect.js                                      | JavaScript         |         32 |          0 |         10 |         42 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\lib\hooks\useQuizStreak.js                            | JavaScript         |          7 |          1 |          2 |         10 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\lib\hooks\useStreak.js                                | JavaScript         |         47 |         18 |         14 |         79 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\lib\quizBadges.js                                     | JavaScript         |         33 |          8 |          2 |         43 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\models\Quiz.js                                        | JavaScript         |         49 |         12 |          4 |         65 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\models\UserProfile.js                                 | JavaScript         |         29 |          1 |          2 |         32 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\models\flashcards_mindmap.js                          | JavaScript         |         30 |          6 |          4 |         40 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\next.config.mjs                                       | JavaScript         |          2 |          1 |          2 |          5 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\package-lock.json                                     | JSON               |      8,685 |          0 |          1 |      8,686 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\package.json                                          | JSON               |         36 |          0 |          1 |         37 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\postcss.config.mjs                                    | JavaScript         |          4 |          0 |          2 |          6 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\public\file.svg                                       | XML                |          1 |          0 |          0 |          1 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\public\globe.svg                                      | XML                |          1 |          0 |          0 |          1 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\public\next.svg                                       | XML                |          1 |          0 |          0 |          1 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\public\vercel.svg                                     | XML                |          1 |          0 |          0 |          1 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\public\window.svg                                     | XML                |          1 |          0 |          0 |          1 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\styles\Badge.module.css                               | PostCSS            |         44 |          2 |          7 |         53 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\styles\globals.css                                    | PostCSS            |        143 |          9 |         22 |        174 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\syllabus_results.json                                 | JSON               |          8 |          0 |          0 |          8 |
+| c:\Users\Tejas\Desktop\Tejas\GitHub\studymate\tailwind.config.js                                    | JavaScript         |         10 |          0 |          1 |         11 |
+| Total                                                                                               |                    |     15,646 |      1,278 |        926 |     17,850 |
++-----------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

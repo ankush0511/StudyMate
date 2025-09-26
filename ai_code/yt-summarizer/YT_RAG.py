@@ -1,7 +1,7 @@
 import streamlit as st
-from utills.youtube_utils import extract_video_id, get_transcript_and_summary
-from utills.pinecone_utils import create_pinecone_index, index_documents, retrieve_documents
-from utills.llm_utils import get_embedding, generate_answer
+from youtube_utils import extract_video_id, get_transcript_and_summary
+from pinecone_utils import create_chroma_collection, index_documents, retrieve_documents
+from llm_utils import get_embedding, generate_answer
 from dataclasses import dataclass
 from typing import List, Tuple
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -29,7 +29,7 @@ def main():
     if 'summary' not in st.session_state:
         st.session_state.summary = ""
     if 'index' not in st.session_state:
-        st.session_state.index = create_pinecone_index()
+        st.session_state.index = create_chroma_collection()
 
     # Input for YouTube URL
     youtube_url = st.text_input("Paste YouTube URL here:", placeholder="https://youtu.be/...")

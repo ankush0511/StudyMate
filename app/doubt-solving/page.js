@@ -1,4 +1,3 @@
-// app/use-ai/page.js
 "use client";
 import "../../styles/globals.css";
 import { useState, useRef, useEffect } from "react";
@@ -146,8 +145,6 @@ export default function ChatPage() {
                     : "bg-red-100"
                 }`}
               >
-                {/* --- THIS IS THE FINAL FIX --- */}
-                {/* The inline style forces the correct text color, overriding any other styles. */}
                 <p
                   className="whitespace-pre-wrap"
                   style={{
@@ -163,13 +160,11 @@ export default function ChatPage() {
                       typeof message.content === "string"
                         ? message.content
                             .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>") // Bold
-                            // First, replace Markdown-style links: [Title](URL)
+                            .replace(/_(.*?)_/g, "<i>$1</i>") // Italic
                             .replace(
                               /\[(.*?)\]\((https?:\/\/[^\s]+)\)/g,
                               '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline">$1</a>'
                             )
-                            // Then, replace any remaining plain text URLs that are NOT already in an <a> tag.
-                            // The negative lookbehind (?<!...) ensures we don't double-link.
                             .replace(
                               /(?<!href=")(https?:\/\/[^\s]+)/g,
                               '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline">$1</a>'

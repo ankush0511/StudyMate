@@ -1,7 +1,10 @@
 from urllib.parse import urlparse, parse_qs
 from typing import Optional, Tuple
+import google.generativeai as genai
 from youtube_transcript_api import YouTubeTranscriptApi
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_google_genai import ChatGoogleGenerativeAI
+
 from langchain_groq import ChatGroq
 import time
 import logging
@@ -14,7 +17,16 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
+# Add checks for missing keys (recommended)
+if not GOOGLE_API_KEY:
+    logger.error("GOOGLE_API_KEY environment variable not set.")
+    # Consider raising an error or handling this more robustly
+if not GROQ_API_KEY:
+    logger.warning("GROQ_API_KEY environment variable not set. Groq models might not work.")
+
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", google_api_key=GOOGLE_API_KEY)
 @dataclass
 class FetchedTranscriptSnippet:
     text: str
@@ -61,22 +73,22 @@ def get_transcript_and_summary(video_id: str) -> Tuple[str, str]:
             text_split = RecursiveCharacterTextSplitter(chunk_size=7000, chunk_overlap=200)
             tsplit = text_split.split_text(combined_text)
             for i in tsplit:
-                llm = ChatGroq(model='gemma2-9b-it', api_key=GROQ_API_KEY)
-                prompt = f"""Translate the following Hindi text into fluent English. Return only the translated English text without any explanation:\n{i}"""
+                # llm = ChatGroq(model='gemma2-9b-it', api_key=GROQ_API_KEY)
+                prompt = f"""Translate the following Hindi text :\n{i} into fluent English. Return only the translated English text without any explanation"""
                 result = llm.invoke(prompt)
                 time.sleep(1)
                 final_trans += result.content + " "
-                prompt = f"""Summarize the following text in 1-2 lines:\n{i}"""
+                prompt = f"""Summarize the following text :\n{i}"""
                 result = llm.invoke(prompt)
                 final_sum += result.content + "\n"
-                time.sleep(3)
+                # time.sleep(3)
         else:
             final_trans = combined_text
             text_split = RecursiveCharacterTextSplitter(chunk_size=7000, chunk_overlap=200)
             tsplit = text_split.split_text(combined_text)
             for i in tsplit:
-                llm = ChatGroq(model='gemma2-9b-it', api_key=GROQ_API_KEY)
-                prompt = f"""Summarize the following text in 1-2 lines:\n{i}"""
+                # llm = ChatGroq(model='gemma2-9b-it', api_key=GROQ_API_KEY)
+                prompt = f"""Summarize the following text :\n{i} dont add the * and any other symbol"""
                 result = llm.invoke(prompt)
                 final_sum += result.content + "\n"
     return final_trans, final_sum

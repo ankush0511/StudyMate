@@ -37,9 +37,9 @@ function YTSummarizerContent() {
 
       const data = await res.json();
 
-      if (res.ok && data.response.Summary) {
-        setSummary(data.response.Summary.summary);
-        setTranscript(data.response.Summary.transcript);
+      if (res.ok && data.Summary) { // <-- REMOVED .response
+        setSummary(data.Summary.summary); // <-- REMOVED .response
+        setTranscript(data.Summary.transcript); // <-- REMOVED .response
       } else {
         setError(data.error || "An unknown error occurred.");
       }

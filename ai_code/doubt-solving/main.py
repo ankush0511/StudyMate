@@ -1,3 +1,4 @@
+# main.py
 import sys
 import json
 import re
@@ -5,12 +6,12 @@ import base64
 from groq import Groq
 from dotenv import load_dotenv
 from fpdf import FPDF
-from notes_videos import clean_text_for_pdf, generate_pdf_from_json, get_groq_response, validate_youtube_url
+from notes import clean_text_for_pdf, generate_pdf_from_json, get_groq_response
+from yt_videos import search_youtube # Import the YouTube search function
 
 load_dotenv()
 
 # --- MAIN EXECUTION BLOCK ---
-# ... (The rest of your main execution block is correct)
 if __name__ == "__main__":
     result_dict = {}
     try:
@@ -53,44 +54,19 @@ if __name__ == "__main__":
             }
 
         elif task == "find-youtube-videos":
-            # 1. Change the prompt to request structured JSON
-            system_prompt = (
-                "You are a YouTube video finder. Based on the user's topic, find 3 to 5 highly relevant "
-                "YouTube videos. Your response MUST be a valid JSON array of objects. Each object must have "
-                "a 'title', 'channel', and 'url' key. Ensure the URL is a direct link to a YouTube video."
-            )
-            ai_response_str = get_groq_response(user_query, system_prompt)
-            
-            # 2. Clean and parse the JSON response
-            cleaned_str = re.sub(r'^```json\s*|\s*```$', '', ai_response_str.strip())
-            videos_json = json.loads(cleaned_str)
-            
-            # 3. Validate each URL and build a clean response string
-            validated_videos = []
-            if isinstance(videos_json, list): # Make sure the AI returned a list
-                for video in videos_json:
-                    url = video.get("url")
-                    if url and validate_youtube_url(url):
-                        validated_videos.append(video)
-            
-            # 4. Format the final string to send to the frontend
-            if not validated_videos:
-                response_content = "I couldn't find any valid YouTube videos for that topic. Please try a different search."
+            # Call search_youtube with specific types: video and playlist
+            items = search_youtube(user_query, result_types=['video', 'playlist'])
+            if items:
+                response_content = "**Here are some YouTube results I found for you:**\n\n"
+                for item in items:
+                    if item['type'] == 'video':
+                        response_content += f"▶️ **Video:** [{item['title']}]({item['link']})\n   _From: {item['channel']}_\n\n"
+                    elif item['type'] == 'playlist':
+                        response_content += f"▶️ **Playlist:** [{item['title']}]({item['link']})\n   _By: {item['channel']}_\n\n"
             else:
-                response_parts = []
-                for idx, video in enumerate(validated_videos):
-                    title = video.get('title', 'No Title')
-                    channel = video.get('channel', 'No Channel')
-                    url = video.get('url')
-                    response_parts.append(
-                        f"**{idx + 1}. {title}**\n"
-                        f"- **Channel:** {channel}\n"
-                        f"- **Link:** {url}"
-                    )
-                response_content = "\n\n".join(response_parts)
-
+                response_content = "Sorry, I couldn't find any YouTube videos or playlists for your query."
+            
             result_dict = {"response": response_content, "isPdf": False}
-
         else:
             raise ValueError(f"Unknown task: {task}")
         
