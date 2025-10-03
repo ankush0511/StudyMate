@@ -48,7 +48,7 @@ function CareerGuidanceContent() {
                 setActiveTab('overview'); 
                 setChatHistory([{ 
                     role: 'assistant', 
-                    content: `Hello! I'm ready to answer your questions about a career in **${data.response.career_name}**. What would you like to know?`
+                    content: `Hello! I am ready to answer your questions about a career in **${data.response.career_name}**. What would you like to know?`
                 }]);
             } else {
                 setError(data.error || 'Failed to generate the career guide.');
